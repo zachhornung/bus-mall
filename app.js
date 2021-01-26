@@ -1,5 +1,4 @@
 'use strict';
-
 var imagesSourceArray = ['images/bag.jpg', 'images/banana.jpg', 'images/bathroom.jpg', 'images/boots.jpg', 'images/breakfast.jpg', 'images/bubblegum.jpg', 'images/chair.jpg', 'images/cthulhu.jpg', 'images/dog-duck.jpg', 'images/dragon.jpg', 'images/pen.jpg', 'images/pet-sweep.jpg', 'images/scissors.jpg', 'images/shark.jpg', 'images/sweep.png', 'images/tauntaun.jpg', 'images/unicorn.jpg', 'images/usb.gif', 'images/water-can.jpg', 'images/wine-glass.jpg'];
 var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 function ProductImage(image, name){
@@ -7,10 +6,8 @@ function ProductImage(image, name){
   this.timesClicked = 0;
   this.timesShown = 0;
   this.image = image;
-
   ProductImage.allImages.push(this);
 }
-
 // creates an allImages property on the ProductImage constructor.
 ProductImage.allImages = [];
 
@@ -36,17 +33,13 @@ function generateRandomProducts(){
   var leftProduct = ProductImage.allImages[leftIndex];
   var centerProduct = ProductImage.allImages[centerIndex];
   var rightProduct = ProductImage.allImages[rightIndex];
-
   return [leftProduct, rightProduct, centerProduct];
 }
-
 function renderProducts(leftProduct, centerProduct, rightProduct){
   leftPicImage.src = leftProduct.image;
   leftProduct.timesShown++;
-
   centerPicImage.src = centerProduct.image;
   centerProduct.timesShown++;
-
   rightPicImage.src = rightProduct.image;
   rightProduct.timesShown++;
 }
@@ -60,11 +53,8 @@ var ul = document.createElement('ul');
 var h2 = document.createElement('h2');
 h2.textContent = 'Results';
 var button = document.getElementById('button');
-
 // external function for event listener, so i can remove the event function
 function forEventListener(event){
-  console.log(event.target);
-
   for (var i = 0; i < ProductImage.allImages.length; i++){
     if (event.target.src.includes(ProductImage.allImages[i].image)){
       ProductImage.allImages[i].timesClicked++;
@@ -83,7 +73,6 @@ function forEventListener(event){
     resultsDiv.appendChild(button);
   }
 }
-
 imgContainer.addEventListener('click', forEventListener);
 
 function displayList(){
@@ -96,8 +85,7 @@ function displayList(){
   }
 }
 
-button.addEventListener('click', function (event){
-  console.log(event.target);
+button.addEventListener('click', function (){
   displayList();
 });
 
