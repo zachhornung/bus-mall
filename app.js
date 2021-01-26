@@ -1,8 +1,9 @@
 'use strict';
 
 var imagesSourceArray = ['images/bag.jpg', 'images/banana.jpg', 'images/bathroom.jpg', 'images/boots.jpg', 'images/breakfast.jpg', 'images/bubblegum.jpg', 'images/chair.jpg', 'images/cthulhu.jpg', 'images/dog-duck.jpg', 'images/dragon.jpg', 'images/pen.jpg', 'images/pet-sweep.jpg', 'images/scissors.jpg', 'images/shark.jpg', 'images/sweep.png', 'images/tauntaun.jpg', 'images/unicorn.jpg', 'images/usb.gif', 'images/water-can.jpg', 'images/wine-glass.jpg'];
-
-function ProductImage(image){
+var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass']
+function ProductImage(image, name){
+  this.name = name;
   this.timesClicked = 0;
   this.timesShown = 0;
   this.image = image;
@@ -14,7 +15,7 @@ function ProductImage(image){
 ProductImage.allImages = [];
 
 for (var i = 0; i < imagesSourceArray.length; i++){
-  new ProductImage(imagesSourceArray[i]);
+  new ProductImage(imagesSourceArray[i], productNames[i]);
 }
 console.log(ProductImage.allImages);
 
@@ -54,9 +55,8 @@ var roundsLimit = 25;
 var randomProducts = generateRandomProducts();
 renderProducts(randomProducts[0], randomProducts[1], randomProducts[2]);
 
-
-
-imgContainer.addEventListener('click', function (event){
+// external function for event listener, so i can remove the event function
+function forEventListener(event){
   console.log(event.target);
 
   for (var i = 0; i < ProductImage.allImages.length; i++){
@@ -71,12 +71,28 @@ imgContainer.addEventListener('click', function (event){
   var newProducts = generateRandomProducts();
   renderProducts(newProducts[0], newProducts[1], newProducts[2]);
   if (roundsCounter === roundsLimit){
-    imgContainer.addEventListener('click', function(event){
-      alert('That\'s ' + roundsLimit + ' Rounds of Voting!');
-      event.stopPropagation();
-      return event.stopPropagation();
-    });
+    alert('That\'s ' + roundsLimit + ' Rounds of Voting!');
+    imgContainer.removeEventListener('click', forEventListener);
+    displayList();
   }
-});
+}
 
+imgContainer.addEventListener('click', forEventListener);
+
+var resultsDiv = document.getElementById('results');
+var ul = document.createElement('ul');
+var h2 = document.createElement('h2');
+h2.textContent = 'Results';
+
+function displayList(){
+  resultsDiv.appendChild(h2);
+  resultsDiv.appendChild(ul);
+  for (var i = 0; i < ProductImage.allImages.length; i++){
+    var li = document.createElement('li');
+    li.textContent = (ProductImage.allImages[i].name + ' was shown ' + ProductImage.allImages[i].timesShown + ' times, and was clicked on ' + ProductImage.allImages[i].timesClicked + ' times.');
+    ul.appendChild(li);
+  }
+}
+
+// var resultsButton = document.createElement('button')
 
