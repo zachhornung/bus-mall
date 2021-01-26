@@ -1,18 +1,17 @@
 'use strict';
-var imagesSourceArray = ['images/bag.jpg', 'images/banana.jpg', 'images/bathroom.jpg', 'images/boots.jpg', 'images/breakfast.jpg', 'images/bubblegum.jpg', 'images/chair.jpg', 'images/cthulhu.jpg', 'images/dog-duck.jpg', 'images/dragon.jpg', 'images/pen.jpg', 'images/pet-sweep.jpg', 'images/scissors.jpg', 'images/shark.jpg', 'images/sweep.png', 'images/tauntaun.jpg', 'images/unicorn.jpg', 'images/usb.gif', 'images/water-can.jpg', 'images/wine-glass.jpg'];
-var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
-function ProductImage(image, name){
-  this.name = name;
+var imagesSourceArray = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
+function ProductImage(name){
+  this.name = name.substring(0, name.length - 4);
   this.timesClicked = 0;
   this.timesShown = 0;
-  this.image = image;
+  this.image = `images/${name}`;
   ProductImage.allImages.push(this);
 }
 // creates an allImages property on the ProductImage constructor.
 ProductImage.allImages = [];
 
 for (var i = 0; i < imagesSourceArray.length; i++){
-  new ProductImage(imagesSourceArray[i], productNames[i]);
+  new ProductImage(imagesSourceArray[i]);
 }
 console.log(ProductImage.allImages);
 
@@ -35,15 +34,33 @@ function generateRandomProducts(){
   var rightProduct = ProductImage.allImages[rightIndex];
   return [leftProduct, rightProduct, centerProduct];
 }
-function renderProducts(leftProduct, centerProduct, rightProduct){
-  leftPicImage.src = leftProduct.image;
-  leftProduct.timesShown++;
-  centerPicImage.src = centerProduct.image;
-  centerProduct.timesShown++;
-  rightPicImage.src = rightProduct.image;
-  rightProduct.timesShown++;
+function renderProducts(){
+  var currentlyRenderedProducts = [leftPicImage.name, centerPicImage.name, rightPicImage.name];
+  var newImages = generateRandomProducts();
+  while (
+    currentlyRenderedProducts[0] === newImages[0].name ||
+    currentlyRenderedProducts[1] === newImages[0].name ||
+    currentlyRenderedProducts[2] === newImages[0].name ||
+    currentlyRenderedProducts[0] === newImages[1].name ||
+    currentlyRenderedProducts[1] === newImages[1].name ||
+    currentlyRenderedProducts[2] === newImages[1].name ||
+    currentlyRenderedProducts[0] === newImages[2].name ||
+    currentlyRenderedProducts[1] === newImages[2].name ||
+    currentlyRenderedProducts[2] === newImages[2].name
+  ){
+    newImages = generateRandomProducts();
+  }
+  leftPicImage.src = newImages[0].image;
+  leftPicImage.name = newImages[0].name;
+  newImages[0].timesShown++;
+  centerPicImage.src = newImages[1].image;
+  centerPicImage.name = newImages[1].name;
+  newImages[1].timesShown++;
+  rightPicImage.src = newImages[2].image;
+  rightPicImage.name = newImages[2].name;
+  newImages[2].timesShown++;
 }
-var roundsCounter = 1;
+var roundsCounter = 0;
 var roundsLimit = 25;
 var randomProducts = generateRandomProducts();
 renderProducts(randomProducts[0], randomProducts[1], randomProducts[2]);
@@ -88,5 +105,3 @@ function displayList(){
 button.addEventListener('click', function (){
   displayList();
 });
-
-
