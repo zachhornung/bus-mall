@@ -1,7 +1,7 @@
 'use strict';
 
 var imagesSourceArray = ['images/bag.jpg', 'images/banana.jpg', 'images/bathroom.jpg', 'images/boots.jpg', 'images/breakfast.jpg', 'images/bubblegum.jpg', 'images/chair.jpg', 'images/cthulhu.jpg', 'images/dog-duck.jpg', 'images/dragon.jpg', 'images/pen.jpg', 'images/pet-sweep.jpg', 'images/scissors.jpg', 'images/shark.jpg', 'images/sweep.png', 'images/tauntaun.jpg', 'images/unicorn.jpg', 'images/usb.gif', 'images/water-can.jpg', 'images/wine-glass.jpg'];
-var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass']
+var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 function ProductImage(image, name){
   this.name = name;
   this.timesClicked = 0;
@@ -55,6 +55,12 @@ var roundsLimit = 25;
 var randomProducts = generateRandomProducts();
 renderProducts(randomProducts[0], randomProducts[1], randomProducts[2]);
 
+var resultsDiv = document.getElementById('results'); //this is for when the max number of rounds is reached, a button will appear that will show results if you click on it
+var ul = document.createElement('ul');
+var h2 = document.createElement('h2');
+h2.textContent = 'Results';
+var button = document.getElementById('button');
+
 // external function for event listener, so i can remove the event function
 function forEventListener(event){
   console.log(event.target);
@@ -73,16 +79,12 @@ function forEventListener(event){
   if (roundsCounter === roundsLimit){
     alert('That\'s ' + roundsLimit + ' Rounds of Voting!');
     imgContainer.removeEventListener('click', forEventListener);
-    displayList();
+    button.textContent = 'Results';
+    resultsDiv.appendChild(button);
   }
 }
 
 imgContainer.addEventListener('click', forEventListener);
-
-var resultsDiv = document.getElementById('results');
-var ul = document.createElement('ul');
-var h2 = document.createElement('h2');
-h2.textContent = 'Results';
 
 function displayList(){
   resultsDiv.appendChild(h2);
@@ -94,5 +96,9 @@ function displayList(){
   }
 }
 
-// var resultsButton = document.createElement('button')
+button.addEventListener('click', function (event){
+  console.log(event.target);
+  displayList();
+});
+
 
