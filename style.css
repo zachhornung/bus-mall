@@ -19,7 +19,7 @@ body {
   background-color: aliceblue;
 }
 img:hover{
-  box-shadow: aquamarine 10px 10px 10px 10px;
+  box-shadow: grey 5px 5px 5px 5px;
 }
 #wrapper{
   display: grid;
@@ -36,5 +36,5 @@ h2{
   width: 400px;
 }
 header {
-  justify-content: center;
+  align-content: center;
 }
