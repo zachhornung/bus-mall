@@ -1,26 +1,32 @@
 'use strict';
+//Global Variables Go Below
 var imagesSourceArray = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
-function ProductImage(name){
+var imgContainer = document.getElementById('img-container');
+var leftPicImage = document.getElementById('left-pic');
+var centerPicImage = document.getElementById('center-pic');
+var rightPicImage = document.getElementById('right-pic');
+var roundsCounter = 0;
+var roundsLimit = 25;
+var resultsDiv = document.getElementById('results'); //this is for when the max number of rounds is reached, a button will appear that will show results if you click on it
+var ul = document.createElement('ul');
+var h2 = document.createElement('h2');
+h2.textContent = 'Results';
+var button = document.getElementById('button');
+
+function ProductImage(name){ //this is the object constructor
   this.name = name.substring(0, name.length - 4);
   this.timesClicked = 0;
   this.timesShown = 0;
   this.image = `images/${name}`;
   ProductImage.allImages.push(this);
 }
-// creates an allImages property on the ProductImage constructor.
-ProductImage.allImages = [];
+ProductImage.allImages = []; // creates an allImages property on the ProductImage constructor.
 
-for (var i = 0; i < imagesSourceArray.length; i++){
+for (var i = 0; i < imagesSourceArray.length; i++){ //this makes an object for each position in the image source array on line 3
   new ProductImage(imagesSourceArray[i]);
 }
-console.log(ProductImage.allImages);
 
-var imgContainer = document.getElementById('img-container');
-var leftPicImage = document.getElementById('left-pic');
-var centerPicImage = document.getElementById('center-pic');
-var rightPicImage = document.getElementById('right-pic');
-
-function generateRandomProducts(){
+function generateRandomProducts(){ //this generates a random number that ranges from 0 to however many index positions are in the product list. it then uses that number to select a random product form the array.
   var leftIndex = Math.floor(Math.random() * ProductImage.allImages.length);
   var centerIndex = Math.floor(Math.random() * ProductImage.allImages.length);
   var rightIndex = Math.floor(Math.random() * ProductImage.allImages.length);
@@ -34,7 +40,7 @@ function generateRandomProducts(){
   var rightProduct = ProductImage.allImages[rightIndex];
   return [leftProduct, rightProduct, centerProduct];
 }
-function renderProducts(){
+function renderProducts(){ //this renders the products to the screen with the condition that they were not displayed in the previous round of voting. it keeps track of how many times something is shown also
   var currentlyRenderedProducts = [leftPicImage.name, centerPicImage.name, rightPicImage.name];
   var newImages = generateRandomProducts();
   while (
@@ -60,18 +66,7 @@ function renderProducts(){
   rightPicImage.name = newImages[2].name;
   newImages[2].timesShown++;
 }
-var roundsCounter = 0;
-var roundsLimit = 25;
-var randomProducts = generateRandomProducts();
-renderProducts(randomProducts[0], randomProducts[1], randomProducts[2]);
-
-var resultsDiv = document.getElementById('results'); //this is for when the max number of rounds is reached, a button will appear that will show results if you click on it
-var ul = document.createElement('ul');
-var h2 = document.createElement('h2');
-h2.textContent = 'Results';
-var button = document.getElementById('button');
-// external function for event listener, so i can remove the event function
-function forEventListener(event){
+function forEventListener(event){ //this checks to see which image was clicked, and  then incriments the times clicked for that object by 1. it then increases the current voting round by 1, and generates new images. if the current voting round is the last voting round, it alerts the user, removes the event listener, and displays the results button to see the results.
   for (var i = 0; i < ProductImage.allImages.length; i++){
     if (event.target.src.includes(ProductImage.allImages[i].image)){
       ProductImage.allImages[i].timesClicked++;
@@ -90,9 +85,7 @@ function forEventListener(event){
     resultsDiv.appendChild(button);
   }
 }
-imgContainer.addEventListener('click', forEventListener);
-
-function displayList(){
+function displayList(){ //this creates a list that includes every item in the product catalog, showing the name of the item, how many times it was shown, and how many times it was clicked on.
   resultsDiv.appendChild(h2);
   resultsDiv.appendChild(ul);
   for (var i = 0; i < ProductImage.allImages.length; i++){
@@ -100,14 +93,8 @@ function displayList(){
     li.textContent = (ProductImage.allImages[i].name + ' was shown ' + ProductImage.allImages[i].timesShown + ' times, and was clicked on ' + ProductImage.allImages[i].timesClicked + ' times.');
     ul.appendChild(li);
   }
-  
 }
-
-button.addEventListener('click', function (){
-  displayList();
-  displayChart();
-});
-function displayChart(){
+function displayChart(){ //this displays a chart that shows each item in the catalog, how many times it was shown, and how many times it was clicked on.
   var ctx = document.getElementById('myChart').getContext('2d');
   var votesByProduct = [];
   var timesProductsAreShown = [];
@@ -234,3 +221,13 @@ function displayChart(){
     }
   });
 }
+var randomProducts = generateRandomProducts();
+renderProducts(randomProducts[0], randomProducts[1], randomProducts[2]);
+
+imgContainer.addEventListener('click', forEventListener);
+
+button.addEventListener('click', function (){ //this adds an event listener to the button that will display both the list and the chart when clicked.
+  displayList();
+  displayChart();
+});
+
