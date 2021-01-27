@@ -7,6 +7,7 @@ var centerPicImage = document.getElementById('center-pic');
 var rightPicImage = document.getElementById('right-pic');
 var roundsCounter = 0;
 var roundsLimit = 25;
+var listLocation = document.getElementById('list-here');
 var resultsDiv = document.getElementById('results'); //this is for when the max number of rounds is reached, a button will appear that will show results if you click on it
 var ul = document.createElement('ul');
 var h2 = document.createElement('h2');
@@ -86,8 +87,8 @@ function forEventListener(event){ //this checks to see which image was clicked, 
   }
 }
 function displayList(){ //this creates a list that includes every item in the product catalog, showing the name of the item, how many times it was shown, and how many times it was clicked on.
-  resultsDiv.appendChild(h2);
-  resultsDiv.appendChild(ul);
+  listLocation.appendChild(h2);
+  h2.appendChild(ul);
   for (var i = 0; i < ProductImage.allImages.length; i++){
     var li = document.createElement('li');
     li.textContent = (ProductImage.allImages[i].name + ' was shown ' + ProductImage.allImages[i].timesShown + ' times, and was clicked on ' + ProductImage.allImages[i].timesClicked + ' times.');
