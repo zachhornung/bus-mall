@@ -1,4 +1,40 @@
 img {
-  height: 200px;
-  width: 200px;
+  height: 300px;
+  width: 300px;
+  margin: 5px;
+}
+#results {
+  float: left;
+}
+
+#myChart {
+  height: 900px;
+  width: 900px;
+} 
+#chart-container{
+  height: 900px;
+  width: 900px;
+}
+body {
+  background-color: aliceblue;
+}
+img:hover{
+  box-shadow: grey 5px 5px 5px 5px;
+}
+#wrapper{
+  display: grid;
+  grid-template-columns: auto auto;
+  height: 400px;
+}
+#list-here{
+  width: auto;
+}
+ul {
+  font-size: small;
+}
+h2{
+  width: 400px;
+}
+header {
+  align-content: center;
 }
