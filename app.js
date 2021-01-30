@@ -93,6 +93,7 @@ function forButtonClick(){// this is for the results button, when it is clicked 
 function forImgClick(event){//this is the event listener for the actual voting (when an image is clicked). it checks to make sure the rounds limit hasnt been met, and then finds the image that was clicked and adds a counter to it. it incriments to the next round, stores the current round in local memory, generates new products, and stores the data of those products in local memory.
   event.preventDefault();
   if (roundsCounter === roundsLimit || fetchRoundsCount() >= roundsLimit){
+    button.addEventListener('click', forButtonClick);
     alert('That\'s ' + roundsLimit + ' Rounds of Voting!');
     imgContainer.removeEventListener('click', forImgClick);
     button.textContent = 'Results';
@@ -102,14 +103,11 @@ function forImgClick(event){//this is the event listener for the actual voting (
   for (var i = 0; i < ProductImage.allImages.length; i++){
     if (event.target.src.includes(ProductImage.allImages[i].image)){
       ProductImage.allImages[i].timesClicked++;
-      console.log(ProductImage.allImages[i]);
     }
   }
   // eslint-disable-next-line no-unused-vars
   roundsCounter++;
   storeRoundsCount();
-  console.log(roundsCounter);
-  console.log(fetchRoundsCount());
   var newProducts = generateRandomProducts();
   renderProducts(newProducts[0], newProducts[1], newProducts[2]);
   storeProductData();
@@ -170,7 +168,3 @@ var randomProducts = generateRandomProducts();
 renderProducts(randomProducts[0], randomProducts[1], randomProducts[2]);
 
 imgContainer.addEventListener('click', forImgClick);
-
-if (roundsCounter === roundsLimit){
-  button.addEventListener('click', forButtonClick);
-}
